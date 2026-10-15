@@ -35,10 +35,13 @@ Tarifa desconhecida bloqueia lucro, margens, repasse, ROI, ROAS, metas e cenári
 
 ## Validação executada
 
-24 grupos matemáticos/estruturais passaram; inversores comparados com busca exaustiva de centavos em 24 configurações. Quatro produtos verificados na Shopee, Amazon e ML, com cotações ML sintéticas e explícitas. Integração em DOM simulado verificou migração, bloqueios em PDF/CSV/cópia, metas e aplicação, Queima, Ads, logística, presets e persistência. PDF gerado e páginas A4 inspecionadas após renderização.
+25 grupos matemáticos/estruturais passaram; inversores comparados com busca exaustiva de centavos em 24 configurações. Quatro produtos verificados na Shopee, Amazon e ML, com cotações ML sintéticas e explícitas. Integração em DOM simulado verificou migração, bloqueios em PDF/CSV/cópia, metas e aplicação, Queima, Ads, logística, presets e persistência. PDF gerado e páginas A4 inspecionadas após renderização.
 
 Caso de referência sem embalagem/outros: preço R$99,90, custo R$60, comissão arredondada R$29,99, repasse R$69,91, operacional/após Ads R$9,91; provisão calculada R$1,998 e rateio R$8,205 levam a gerencial R$-0,293 (exibido -R$0,29). Com embalagem R$3, o gerencial é aproximadamente -R$3,29. As linhas aparecem separadas.
 
 Tarifas manuais Shopee também têm escopo. Base de comissão antes/depois do desconto é configurável e precisa corresponder à regra conferida da conta. Tabelas DBA públicas substituem as extrapolações anteriores, incluindo 9–10kg e adicionais de R$3,05/R$3,50/R$4 conforme coluna.
 
 Validação visual desktop e em celular físico deve ser distinguida: testes de CSS/estrutura não equivalem a um Safari real. Não se declara teste físico de iPhone quando o ambiente não o oferece.
+
+
+Frete creditado: no envio próprio/Flex é possível registrar frete efetivamente recebido. A receita efetiva das margens inclui o crédito; a base da comissão tem opção explícita de incluir o frete conforme a regra conferida. ACOS e provisão incidem sobre o produto após desconto (sem esse frete), e ROAS usa a receita do produto. Frete recebido não pode ser descontado novamente do custo de transporte. No fluxo integrado Shopee/DBA/FBA/ME2 esse campo positivo é bloqueado para evitar crédito inventado.
