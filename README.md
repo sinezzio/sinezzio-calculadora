@@ -6,13 +6,13 @@ HTML/JavaScript estático, sem dependências externas. Dados no navegador, sem s
 
 ## Uso
 
-1. Escolha produto e marketplace. Ajuste custo, embalagem, descontos, Ads e tributos.
-2. Confira a base da comissão e confirme os custos na seção da plataforma. Zero precisa ser informado e confirmado; vazio não é zero.
-3. ML: informe comissão efetiva do tipo de anúncio, tarifa fixa e frete líquido do vendedor. A ferramenta não presume 11% nem acrescenta 5 pontos no Premium.
-4. Para tarifas manuais, informe a faixa de preços em que a cotação é válida. Sem faixa, só o preço atual tem resultado; fora da cotação a simulação fica incompleta.
-5. Metas gerenciais exibem preços sugeridos junto dos campos. Use Aplicar para mudar o preço e confira novamente as condições do anúncio.
-6. Queima de Estoque compara o piso variável (inclui produto e Ads) com o piso gerencial (inclui provisões e fixos selecionados).
-7. Exporte PDF/CSV ou copie os resultados. Pendências também são exportadas; lucro desconhecido não aparece como lucro válido.
+1. Automático é o padrão: escolha o produto e informe custo e margem (ou lucro em reais). O preço usado nos cálculos e todos os resultados atualizam juntos, sem Aplicar.
+2. Ao mudar despesas, Ads, desconto, tributos, categoria ou logística, o preço é recalculado nas condições informadas. As despesas da loja são preservadas ao trocar os exemplos de produtos.
+3. O preço atual fica separado para comparação. Para ofertas, selecione Manual; Queima de Estoque ativa esse modo e restaura o preço atual informado.
+4. Taxas estimadas aparecem com aviso. Valores ausentes, dados inválidos e possíveis duplicidades continuam pendentes.
+5. ML e demais tarifas manuais: informe comissão, tarifa e frete da conta e a faixa de preço em que a cotação é válida. O automático não extrapola a cotação. Sem faixa, apenas a simulação no preço informado é liberada.
+6. Confira o resumo dos custos incluídos. Abra Ajustes da venda para alterar embalagem, anúncios, perdas e despesas mensais.
+7. PDF, CSV e cópia levam o preço efetivamente usado, o modo de precificação, a meta e as pendências. Os botões Aplicar permanecem em Comparar outras metas para uso opcional no modo manual.
 
 ## Indicadores
 
