@@ -1,19 +1,47 @@
-# Sinezzio Commerce — Calculadora de marketplaces
+# Sinezzio Commerce — Calculadora financeira
 
-Aplicação estática em português, sem dependências, para Shopee, Amazon e Mercado Livre. Abra `index.html` ou publique a raiz no GitHub Pages. Os dados ficam no localStorage do navegador; cada dispositivo tem seu próprio cenário. A primeira carga do site requer internet; o HTML baixado também pode ser usado localmente.
+https://sinezzio.github.io/sinezzio-calculadora/
 
-## Funcionalidades preservadas
+HTML/JavaScript estático, sem dependências externas. Dados no navegador, sem sincronização. Nenhum custo é consultado automaticamente na conta dos marketplaces.
 
-Precificação por marketplace, comissão, logística, descontos próprios, impostos variáveis, rateio do DAS e despesas mensais, publicidade fixa e ACOS, reserva para perdas, lucro, margem, repasse, ROI, ROAS, preço mínimo e preço para margem-alvo. Presets, cópia do resultado, CSV, restauração e salvamento local.
+## Uso
+
+1. Escolha produto e marketplace. Ajuste custo, embalagem, descontos, Ads e tributos.
+2. Confira a base da comissão e confirme os custos na seção da plataforma. Zero precisa ser informado e confirmado; vazio não é zero.
+3. ML: informe comissão efetiva do tipo de anúncio, tarifa fixa e frete líquido do vendedor. A ferramenta não presume 11% nem acrescenta 5 pontos no Premium.
+4. Para tarifas manuais, informe a faixa de preços em que a cotação é válida. Sem faixa, só o preço atual tem resultado; fora da cotação a simulação fica incompleta.
+5. Metas gerenciais exibem preços sugeridos junto dos campos. Use Aplicar para mudar o preço e confira novamente as condições do anúncio.
+6. Queima de Estoque compara o piso variável (inclui produto e Ads) com o piso gerencial (inclui provisões e fixos selecionados).
+7. Exporte PDF/CSV ou copie os resultados. Pendências também são exportadas; lucro desconhecido não aparece como lucro válido.
+
+## Indicadores
+
+- Repasse: receita após deduções da plataforma. Frete de transportadora própria não é dedução do marketplace.
+- Operacional: após custos variáveis, antes de Ads, provisões e fixos.
+- Após Ads: operacional menos publicidade.
+- Gerencial: após Ads menos provisão e rateio opcional.
+- Margem gerencial: gerencial dividido pela receita após desconto da loja.
+- ROI gerencial: gerencial dividido por produto, aquisição, operação própria e Ads.
+- ROAS: receita dividida pelo teto total de Ads antes de consumir lucro gerencial.
+
+O DAS do MEI é mensal. Não é percentual por venda. Resultado gerencial negativo não implica automaticamente perda de caixa em cada venda.
+
+## Tarifas e limites
+
+Amazon: tabela pública consultada em 15/10/2026; confirme categoria, elegibilidade, divisor cúbico, promoções e custos efetivos. FBA usa tarifa manual mais adicionais; envio próprio é separado.
+
+Shopee: a tabela CNPJ anterior é referência não revalidada nesta auditoria, pois o conteúdo oficial não carregou integralmente. Há modo manual para a cotação efetiva. Pix informado é benefício ao comprador financiado pela plataforma, sem reduzir o repasse do vendedor nem criar receita adicional.
+
+ML: custos dependem do anúncio, preço e logística. Insira os valores do painel; subsídios entram no frete líquido, uma única vez. Consulte AUDITORIA.md.
 
 ## Testes
 
-Execute `node tests/calculator.test.cjs` e `node tests/interface.test.cjs`. Para a comparação com o HTML original, use a variável ORIGINAL_HTML apontando para sua cópia. Não exige instalação de pacotes.
+`node tests/calculator.test.cjs`
+
+`node tests/interface.test.cjs`
+
+Os testes incluem quatro produtos, fronteiras de comissão, peso, Ads, metas, bloqueio de tarifas desconhecidas e migração segura. Cotações ML dos testes são dados sintéticos declarados; não são tarifas comerciais recomendadas.
 
 ## Publicação
 
-Repositório sugerido: `sinezzio-calculadora`. Na configuração Pages do repositório, selecione publicação da branch `main`, pasta `/ (root)`. O arquivo `.nojekyll` está incluído. Não existem chaves, servidor nem banco de dados. HTTPS é fornecido pelo GitHub Pages após a publicação.
-
-## Premissas
-
-As tarifas da base foram preservadas e continuam sendo estimativas que precisam ser conferidas nos painéis oficiais. A calculadora não consulta APIs dos marketplaces. Consulte AUDITORIA.md para as correções técnicas e limitações.
+GitHub Pages usa `main` e a pasta raiz; `.nojekyll` preservado. Arquivos: index.html e pdf-export.js. Abrir o HTML isolado sem o módulo PDF não permite exportar PDF.
