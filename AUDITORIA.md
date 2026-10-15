@@ -48,3 +48,14 @@ Frete creditado: no envio próprio/Flex é possível registrar frete efetivament
 
 
 Ajuste de usabilidade: confirmação deixa de ser requisito para visualizar estimativas quando há valores de referência ou valores manuais preenchidos. O estado `verified` permanece separado do cálculo e aparece em tela, PDF, CSV e cópia. Shopee não revalidada continua rotulada como referência. Tarifas ausentes, dados inválidos, possível duplicidade, frete ML zero não confirmado e preços fora do escopo continuam incompletos. Campos técnicos foram recolhidos em painéis expansíveis; margem desejada e preço sugerido permanecem acessíveis.
+
+
+## Auditoria do fluxo automático
+
+Obstáculos encontrados: metas apenas sugeriam um preço e exigiam Aplicar; presets apagavam despesas da loja; campos principais estavam dispersos; o preço atual e o sugerido não tinham papéis claros. O cálculo em si já respondia aos eventos, mas o preço usado nos resultados não acompanhava a meta.
+
+Correção: modo automático padrão, por margem gerencial ou lucro por unidade. Custo, Ads, descontos, tributos, frete e despesas recalculam preço e resultados juntos, dentro dos limites das tabelas/cotações. Preço atual separado para comparar. Modo manual e Queima mantêm o preço escolhido, sem autoajuste. Aplicar uma meta alternativa passa explicitamente ao modo manual. Presets mantêm despesas, volume e metas; categorias/pesos são atualizados pelo exemplo e cotações de outro produto não são reutilizadas.
+
+28 grupos matemáticos/estruturais e integração em DOM simulado passaram. Incluem atualização sem Aplicar, quatro produtos, efeito de custos e Ads, meta em reais, cotação fora do escopo, meta vazia, preservação de despesas e exportação do preço usado. Formatação monetária passou a reutilizar Intl.NumberFormat para reduzir custo das buscas de preço no celular.
+
+As contas dos marketplaces não estão conectadas. A documentação oficial de listing_prices do ML usa autenticação e contexto do anúncio (categoria/produto, modalidade, preço e logística). Nenhum token ou segredo é colocado no HTML público; portanto, não se afirma consulta automática à conta ou tarifa ML oficial em tempo real. Fonte: https://developers.mercadolivre.com.br/pt_br/descricao-de-produtos/comissao-por-vender .
