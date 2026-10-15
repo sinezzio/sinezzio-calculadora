@@ -1,5 +1,6 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
 const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
+for(const id of ['basicMl','basicAmazon','requiredInputs','missingInputs'])assert.ok(html.indexOf('id="'+id+'"')<html.indexOf('id="simpleSettings"'),id+' must remain outside collapsed settings');
 class El{constructor(){this.type='';this.value='';this.checked=false;this.disabled=false;this.style={};this.dataset={};this.children=[];this.textContent='';this.className='';this.handlers={};this.attrs={};this.tagName='INPUT';this.selectedOptions=[{textContent:'Opção selecionada'}];this.classList={toggle:(key,on)=>{this.attrs['class:'+key]=on;}};}addEventListener(k,f){(this.handlers[k]??=[]).push(f);}setAttribute(k,v){this.attrs[k]=v;}appendChild(e){this.children.push(e);}click(){if(this.disabled)return;this.onclick?.();this.fire('click');}fire(k){for(const f of this.handlers[k]||[])f();}}
 const els={};for(const m of html.matchAll(/<([a-z]+)\b[^>]*\bid="([^"]+)"[^>]*>/g)){const e=els[m[2]]=new El();e.tagName=m[1].toUpperCase();e.type=m[0].match(/type="([^"]+)"/)?.[1]||'';e.value=m[0].match(/value="([^"]*)"/)?.[1]||'';e.checked=/\bchecked/.test(m[0]);}
 const presets=['liq','bat','tor','teste','novo'].map(p=>{const e=new El();e.dataset.preset=p;return e;});
