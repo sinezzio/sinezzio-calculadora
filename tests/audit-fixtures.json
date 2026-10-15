@@ -1,0 +1,312 @@
+[
+  {
+    "product": "Liquidificador Mondial",
+    "platform": "shopee",
+    "cost": "55",
+    "price": "119",
+    "category": "cozinha",
+    "billableWeight": "3.9375",
+    "expected": {
+      "percent": "16.66",
+      "fixed": "20",
+      "log": "0",
+      "payout": "82.34",
+      "operational": "27.34",
+      "afterAds": "27.34",
+      "profit": "19.135"
+    },
+    "displayed": {
+      "percent": "16.66",
+      "fixed": "20.00",
+      "log": "0.00",
+      "payout": "82.34",
+      "operational": "27.34",
+      "afterAds": "27.34",
+      "profit": "19.14"
+    },
+    "floors": {
+      "operational": "74.37",
+      "managerial": "92.1",
+      "heating": "97.79"
+    }
+  },
+  {
+    "product": "Liquidificador Mondial",
+    "platform": "amazon",
+    "cost": "55",
+    "price": "119",
+    "category": "cozinha",
+    "billableWeight": "3.9375",
+    "expected": {
+      "percent": "14.28",
+      "fixed": "0",
+      "log": "18.85",
+      "payout": "85.87",
+      "operational": "30.87",
+      "afterAds": "30.87",
+      "profit": "22.665"
+    },
+    "displayed": {
+      "percent": "14.28",
+      "fixed": "0.00",
+      "log": "18.85",
+      "payout": "85.87",
+      "operational": "30.87",
+      "afterAds": "30.87",
+      "profit": "22.67"
+    },
+    "floors": {
+      "operational": "70.17",
+      "managerial": "90.18",
+      "heating": "95.61"
+    }
+  },
+  {
+    "product": "Batedeira Mondial",
+    "platform": "shopee",
+    "cost": "55",
+    "price": "129.90",
+    "category": "cozinha",
+    "billableWeight": "3.168",
+    "expected": {
+      "percent": "18.19",
+      "fixed": "20",
+      "log": "0",
+      "payout": "91.71",
+      "operational": "36.71",
+      "afterAds": "36.71",
+      "profit": "28.505"
+    },
+    "displayed": {
+      "percent": "18.19",
+      "fixed": "20.00",
+      "log": "0.00",
+      "payout": "91.71",
+      "operational": "36.71",
+      "afterAds": "36.71",
+      "profit": "28.51"
+    },
+    "floors": {
+      "operational": "74.37",
+      "managerial": "92.1",
+      "heating": "97.79"
+    }
+  },
+  {
+    "product": "Batedeira Mondial",
+    "platform": "amazon",
+    "cost": "55",
+    "price": "129.90",
+    "category": "cozinha",
+    "billableWeight": "3.168",
+    "expected": {
+      "percent": "15.59",
+      "fixed": "0",
+      "log": "21.55",
+      "payout": "92.76",
+      "operational": "37.76",
+      "afterAds": "37.76",
+      "profit": "29.555"
+    },
+    "displayed": {
+      "percent": "15.59",
+      "fixed": "0.00",
+      "log": "21.55",
+      "payout": "92.76",
+      "operational": "37.76",
+      "afterAds": "37.76",
+      "profit": "29.56"
+    },
+    "floors": {
+      "operational": "70.17",
+      "managerial": "90.18",
+      "heating": "95.61"
+    }
+  },
+  {
+    "product": "Torneira gourmet",
+    "platform": "shopee",
+    "cost": "85",
+    "price": "169.90",
+    "category": "ferramentas",
+    "billableWeight": "2.5",
+    "expected": {
+      "percent": "23.79",
+      "fixed": "20",
+      "log": "0",
+      "payout": "126.11",
+      "operational": "41.11",
+      "afterAds": "41.11",
+      "profit": "32.905"
+    },
+    "displayed": {
+      "percent": "23.79",
+      "fixed": "20.00",
+      "log": "0.00",
+      "payout": "126.11",
+      "operational": "41.11",
+      "afterAds": "41.11",
+      "profit": "32.91"
+    },
+    "floors": {
+      "operational": "122.09",
+      "managerial": "131.64",
+      "heating": "139.77"
+    }
+  },
+  {
+    "product": "Torneira gourmet",
+    "platform": "amazon",
+    "cost": "85",
+    "price": "169.90",
+    "category": "ferramentas",
+    "billableWeight": "2.5",
+    "expected": {
+      "percent": "18.69",
+      "fixed": "0",
+      "log": "22.40",
+      "payout": "128.81",
+      "operational": "43.81",
+      "afterAds": "43.81",
+      "profit": "35.605"
+    },
+    "displayed": {
+      "percent": "18.69",
+      "fixed": "0.00",
+      "log": "22.40",
+      "payout": "128.81",
+      "operational": "43.81",
+      "afterAds": "43.81",
+      "profit": "35.61"
+    },
+    "floors": {
+      "operational": "115.11",
+      "managerial": "127.15",
+      "heating": "134.72"
+    }
+  },
+  {
+    "product": "Produto de teste",
+    "platform": "shopee",
+    "cost": "60",
+    "price": "99.90",
+    "category": "casa",
+    "billableWeight": "1",
+    "expected": {
+      "percent": "13.99",
+      "fixed": "16",
+      "log": "0",
+      "payout": "69.91",
+      "operational": "9.91",
+      "afterAds": "9.91",
+      "profit": "1.705"
+    },
+    "displayed": {
+      "percent": "13.99",
+      "fixed": "16.00",
+      "log": "0.00",
+      "payout": "69.91",
+      "operational": "9.91",
+      "afterAds": "9.91",
+      "profit": "1.71"
+    },
+    "floors": {
+      "operational": "88.37",
+      "managerial": "97.92",
+      "heating": "108.89"
+    }
+  },
+  {
+    "product": "Produto de teste",
+    "platform": "amazon",
+    "cost": "60",
+    "price": "99.90",
+    "category": "casa",
+    "billableWeight": "1",
+    "expected": {
+      "percent": "11.99",
+      "fixed": "0",
+      "log": "13.45",
+      "payout": "74.46",
+      "operational": "14.46",
+      "afterAds": "14.46",
+      "profit": "6.255"
+    },
+    "displayed": {
+      "percent": "11.99",
+      "fixed": "0.00",
+      "log": "13.45",
+      "payout": "74.46",
+      "operational": "14.46",
+      "afterAds": "14.46",
+      "profit": "6.26"
+    },
+    "floors": {
+      "operational": "75.85",
+      "managerial": "92.79",
+      "heating": "98.39"
+    }
+  },
+  {
+    "product": "Espremedor",
+    "platform": "shopee",
+    "cost": "46",
+    "price": "69.90",
+    "category": "cozinha",
+    "billableWeight": "1",
+    "expected": {
+      "percent": "13.98",
+      "fixed": "4.50",
+      "log": "0",
+      "payout": "51.42",
+      "operational": "5.42",
+      "afterAds": "5.42",
+      "profit": "-2.785"
+    },
+    "displayed": {
+      "percent": "13.98",
+      "fixed": "4.50",
+      "log": "0.00",
+      "payout": "51.42",
+      "operational": "5.42",
+      "afterAds": "5.42",
+      "profit": "-2.79"
+    },
+    "floors": {
+      "operational": "63.12",
+      "managerial": "73.39",
+      "heating": "78.27"
+    }
+  },
+  {
+    "product": "Espremedor",
+    "platform": "amazon",
+    "cost": "46",
+    "price": "69.90",
+    "category": "cozinha",
+    "billableWeight": "1",
+    "expected": {
+      "percent": "8.39",
+      "fixed": "0",
+      "log": "6.75",
+      "payout": "54.76",
+      "operational": "8.76",
+      "afterAds": "8.76",
+      "profit": "0.555"
+    },
+    "displayed": {
+      "percent": "8.39",
+      "fixed": "0.00",
+      "log": "6.75",
+      "payout": "54.76",
+      "operational": "8.76",
+      "afterAds": "8.76",
+      "profit": "0.56"
+    },
+    "floors": {
+      "operational": "59.94",
+      "managerial": "69.27",
+      "heating": "73.44"
+    }
+  }
+]

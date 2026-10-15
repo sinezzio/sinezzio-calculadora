@@ -1,3 +1,86 @@
+# Auditoria financeira — revisão de 15/10/2026
+
+Esta revisão substitui as premissas anteriores que divergirem abaixo. A arquitetura continua estática, no mesmo index.html. Não há conexão autenticada com contas dos marketplaces.
+
+## Espremedor: R$ 12,60 reproduzidos
+
+Com venda R$ 69,90, aquisição R$ 46,00, comissão R$ 18,48 e frete efetivo da loja R$ 27,00, o resultado é **−R$ 21,58**. O código não cobra o frete do comprador automaticamente.
+
+A diferença até −R$ 34,18 é reproduzida exatamente com parâmetros que existiam nos padrões anteriores: embalagem R$ 3,00 + reserva de perdas de 2% (R$ 1,398) + DAS R$ 82,05 / 10 (R$ 8,205). Total adicional interno: R$ 12,603. Resultado interno: −R$ 34,183; apresentado: −R$ 34,18. Isso identifica uma configuração que explica o número; não é leitura dos dados locais do celular do usuário.
+
+| Parcela exibida | Valor |
+|---|---:|
+| Venda | R$ 69,90 |
+| Comissão percentual | −R$ 13,98 |
+| Tarifa fixa | −R$ 4,50 |
+| Produto | −R$ 46,00 |
+| Frete efetivo da loja | −R$ 27,00 |
+| Embalagem | −R$ 3,00 |
+| Reserva de perdas | −R$ 1,40 |
+| Rateio do DAS | −R$ 8,21 |
+| Reconciliação de arredondamento da apresentação | +R$ 0,01 |
+| **Resultado** | **−R$ 34,18** |
+
+O ajuste de centavos não é receita nem despesa financeira: só reconcilia a soma das linhas arredondadas com o total arredondado. As contas internas preservam as casas do rateio e das provisões. A mesma lista de parcelas alimenta a tela, PDF, CSV e cópia, sem subtotais somados como despesas.
+
+## Premissas atuais
+
+- Shopee: tabela CNPJ fornecida pelo usuário para 01/10/2026 — 20% + R$ 4,50 até R$ 79,99; 14% + R$ 16 de R$ 80 a R$ 99,99; 14% + R$ 20 de R$ 100 a R$ 199,99; 14% + R$ 26 de R$ 200 a R$ 499,99. A regra especial anterior abaixo de R$ 9 não foi mantida, porque não consta da tabela solicitada. Acima de R$ 499,99, a referência fica bloqueada e exige cotação, sem extrapolação. Pix financiado pela plataforma não reduz o recebível nem é somado como receita.
+- Frete Shopee: padrão R$ 0 de custo adicional da loja, editável. Nunca copiamos automaticamente o frete mostrado ao comprador. Trocar/limpar produto elimina frete e aquisição específicos do produto anterior; despesas gerais continuam salvas e discriminadas.
+- MEI/SIMEI: padrão R$ 82,05 mensais, 10 unidades físicas/mês entre todas as lojas e rateio ativado. Não incide imposto percentual sobre a venda do MEI. DAS interno por unidade: R$ 8,205. Kit com 2 unidades recebe 2 parcelas. O rateio é gerencial, não dedução do marketplace nem saída de caixa a cada venda.
+- Despesas mensais formam um único conjunto da empresa. Inclusive a mensalidade Amazon, quando devida e informada, é rateada pelo volume global; não reaparece como tarifa por item. Plano Individual tem R$ 2 por anúncio vendido e não adiciona mensalidade profissional. Na migração, ativa-se o rateio MEI solicitado; DAS e volume personalizados são preservados. Alterações futuras do usuário permanecem salvas.
+- Amazon: comissões por categoria, mínimos e tarifas DBA conferidos na página oficial; cálculo pelo maior peso real/cubado do pacote. Região SP capital, outras capitais Sul/Sudeste, interior Sul/Sudeste e Centro-Oeste/Norte/Nordeste têm colunas próprias a partir de R$ 200. FBA, envio próprio e logística fora da referência exigem cotação; zero manual exige confirmação. Peso/categoria dos produtos predefinidos são parâmetros de simulação e devem ser conferidos na conta e no pacote real.
+- Mercado Livre: disponível para simulação sem depender da situação da conta. Comissão da categoria/tipo, tarifa fixa e frete são cotados manualmente no anúncio; cotações só valem no preço ou intervalo declarado. A faixa genérica Clássico/Premium é informativa e nunca substitui tarifa específica no cálculo.
+
+## Três preços
+
+1. Mínimo operacional: cobre custos variáveis e Ads; exclui provisões e fixos mensais.
+2. Mínimo com DAS e fixos: inclui reservas e o rateio global, mesmo se a visualização de rateio estiver desativada.
+3. Aquecimento: inclui tudo acima e margem de segurança configurável, padrão 5% da receita efetiva. A margem/lucro desejados alternativos continuam nos ajustes.
+
+Todos são estimativas condicionadas aos custos informados e ao escopo tarifário. Não há promessa de venda sem prejuízo. Um preço maior pode ser menos lucrativo quando cruza uma faixa. A busca percorre os intervalos das tarifas e testa centavos que podem ser viáveis; um limite contínuo com tolerância de arredondamento descarta apenas centavos impossíveis, sem assumir monotonicidade global.
+
+## Conferência independente
+
+Valores abaixo: embalagem, Ads, perdas, outros custos e frete extra zerados; DAS R$ 82,05 / 10; plano profissional Amazon isento. Não são cotações das contas. Testes em Python Decimal, com arredondamento HALF_UP e busca de cada centavo, geram os valores esperados antes da comparação com JavaScript.
+
+| Produto | Canal | Venda | Comissão + fixa | DBA | Repasse | Operacional | Após DAS | Mín. operacional | Mín. com DAS | Aquecimento 5% |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Liquidificador Mondial | shopee | 119,00 | 36,66 | 0,00 | 82,34 | 27,34 | 19,14 | 74,37 | 92,10 | 97,79 |
+| Liquidificador Mondial | amazon | 119,00 | 14,28 | 18,85 | 85,87 | 30,87 | 22,67 | 70,17 | 90,18 | 95,61 |
+| Batedeira Mondial | shopee | 129,90 | 38,19 | 0,00 | 91,71 | 36,71 | 28,51 | 74,37 | 92,10 | 97,79 |
+| Batedeira Mondial | amazon | 129,90 | 15,59 | 21,55 | 92,76 | 37,76 | 29,56 | 70,17 | 90,18 | 95,61 |
+| Torneira gourmet | shopee | 169,90 | 43,79 | 0,00 | 126,11 | 41,11 | 32,91 | 122,09 | 131,64 | 139,77 |
+| Torneira gourmet | amazon | 169,90 | 18,69 | 22,40 | 128,81 | 43,81 | 35,61 | 115,11 | 127,15 | 134,72 |
+| Produto de teste | shopee | 99,90 | 29,99 | 0,00 | 69,91 | 9,91 | 1,71 | 88,37 | 97,92 | 108,89 |
+| Produto de teste | amazon | 99,90 | 11,99 | 13,45 | 74,46 | 14,46 | 6,26 | 75,85 | 92,79 | 98,39 |
+| Espremedor | shopee | 69,90 | 18,48 | 0,00 | 51,42 | 5,42 | -2,79 | 63,12 | 73,39 | 78,27 |
+| Espremedor | amazon | 69,90 | 8,39 | 6,75 | 54,76 | 8,76 | 0,56 | 59,94 | 69,27 | 73,44 |
+
+Na torneira Amazon, a categoria usada no teste é Ferramentas e Construção (11%), com peso tarifável de 2,5 kg: a R$ 169,90, comissão R$ 18,69 e DBA R$ 22,40; repasse R$ 128,81, operacional R$ 43,81, gerencial interno R$ 35,605 e apresentação R$ 35,61. Confirme a categoria do ASIN e as medidas reais antes de decidir.
+
+O caso anterior de teste Shopee R$ 99,90 / custo R$ 60 / perdas 2% / DAS em 10 permanece: comissão R$ 29,99, repasse R$ 69,91, operacional R$ 9,91 e gerencial −R$ 0,293 (−R$ 0,29 exibidos), antes de outros custos.
+
+Validações: 31 grupos de regressão + 8 grupos adicionais de auditoria; 10 cenários de produtos, 30 pisos independentes, fronteiras de tarifa, 24 combinações com busca exaustiva em centavos, 120 reconciliações completas, rateio único entre três lojas/kits, bloqueios por valores ausentes, duplicidade de Ads/frete e integração DOM com PDF/CSV/cópia e modos de preço. Integração também reproduz o espremedor e a alternância aquecimento/preço manual.
+
+Execução reproduzível a partir do diretório do projeto:
+
+```
+python tests/manual-audit.py
+node tests/calculator.test.cjs
+node tests/audit.test.cjs
+node tests/interface.test.cjs
+```
+
+## Fontes e limites da verificação
+
+- MEI: https://www.gov.br/empresas-e-negocios/pt-br/empreendedor/perguntas-frequentes — tabela 2026 consultada em 15/10/2026, R$ 82,05 para comércio/indústria.
+- Amazon: https://venda.amazon.com.br/precos e https://venda.amazon.com.br/cresca/dba — páginas públicas consultadas em 15/10/2026. Incentivos e aplicação à conta requerem confirmação do vendedor.
+- Shopee: https://seller.shopee.com.br/edu/article/26839 e artigo 18483 retornaram apenas estrutura da página na consulta. A tabela implementada nesta revisão é a fornecida explicitamente pelo usuário; não se afirma revalidação oficial de vigência.
+- ML: https://developers.mercadolivre.com.br/pt_br/descricao-de-produtos/comissao-por-vender — documentação de cotação por contexto de anúncio/logística; página indisponível nesta consulta. Mantêm-se cotações informadas, sem taxas genéricas confirmadas nem tabela de envio inventada.
+
+## Histórico de revisões anteriores
+
 # Auditoria financeira — 15/10/2026
 
 ## Escopo e leitura
