@@ -45,3 +45,6 @@ Validação visual desktop e em celular físico deve ser distinguida: testes de 
 
 
 Frete creditado: no envio próprio/Flex é possível registrar frete efetivamente recebido. A receita efetiva das margens inclui o crédito; a base da comissão tem opção explícita de incluir o frete conforme a regra conferida. ACOS e provisão incidem sobre o produto após desconto (sem esse frete), e ROAS usa a receita do produto. Frete recebido não pode ser descontado novamente do custo de transporte. No fluxo integrado Shopee/DBA/FBA/ME2 esse campo positivo é bloqueado para evitar crédito inventado.
+
+
+Ajuste de usabilidade: confirmação deixa de ser requisito para visualizar estimativas quando há valores de referência ou valores manuais preenchidos. O estado `verified` permanece separado do cálculo e aparece em tela, PDF, CSV e cópia. Shopee não revalidada continua rotulada como referência. Tarifas ausentes, dados inválidos, possível duplicidade, frete ML zero não confirmado e preços fora do escopo continuam incompletos. Campos técnicos foram recolhidos em painéis expansíveis; margem desejada e preço sugerido permanecem acessíveis.
