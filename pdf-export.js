@@ -15,7 +15,7 @@ function build(report){
  function paragraph(s,size=10){const lines=wrap(s,W-2*M,size);if(lines.length*(size+5)<H-160)room(lines.length*(size+5)+6);for(const line of lines){room(size+5);text(line,M,y,size);y-=size+5;}y-=6;}
  function section(title){room(80);y-=6;ops.push(`0.85 0.87 0.9 RG 0.5 w ${M} ${y+8} m ${W-M} ${y+8} l S`);text(title,M,y-10,12,true);y-=26;}
  function row(label,value,bold=false){const valueLines=wrap(value,160);const labelLines=wrap(label,320);const h=Math.max(valueLines.length,labelLines.length)*13;room(h+3);labelLines.forEach((s,i)=>text(s,M,y-i*13,10,bold));valueLines.forEach((s,i)=>text(s,W-M-width(s),y-i*13,10,bold));y-=h+3;}
- start();paragraph(report.product,12);section('Resultado por unidade');for(const r of report.results)row(r[0],r[1],true);
+ start();paragraph(report.product,12);section('Resultado por venda');for(const r of report.results)row(r[0],r[1],true);
  section('Composição financeira');for(const r of report.breakdown)row(...r);
  section('Cenários de preço');for(const r of report.scenarios)paragraph(r);
  section('Observações');for(const n of report.notes)paragraph(n,9);
