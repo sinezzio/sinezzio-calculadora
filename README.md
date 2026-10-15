@@ -20,9 +20,9 @@ HTML/JavaScript estático, sem dependências externas. Dados no navegador, sem s
 - Operacional: após custos variáveis, antes de Ads, provisões e fixos.
 - Após Ads: operacional menos publicidade.
 - Gerencial: após Ads menos provisão e rateio opcional.
-- Margem gerencial: gerencial dividido pela receita após desconto da loja.
+- Margem gerencial: gerencial dividido pela receita após desconto da loja, mais frete efetivamente creditado ao vendedor.
 - ROI gerencial: gerencial dividido por produto, aquisição, operação própria e Ads.
-- ROAS: receita dividida pelo teto total de Ads antes de consumir lucro gerencial.
+- ROAS: receita do produto (sem frete recebido) dividida pelo teto total de Ads antes de consumir lucro gerencial.
 
 O DAS do MEI é mensal. Não é percentual por venda. Resultado gerencial negativo não implica automaticamente perda de caixa em cada venda.
 
@@ -45,3 +45,6 @@ Os testes incluem quatro produtos, fronteiras de comissão, peso, Ads, metas, bl
 ## Publicação
 
 GitHub Pages usa `main` e a pasta raiz; `.nojekyll` preservado. Arquivos: index.html e pdf-export.js. Abrir o HTML isolado sem o módulo PDF não permite exportar PDF.
+
+
+Frete recebido no envio próprio/Flex tem campo separado; confirme sua incidência na base de comissão. Não inclua frete retido pela plataforma e não abata duas vezes o recebimento do custo de transporte. ACOS/provisão de perdas usam a receita do produto sem esse crédito.
