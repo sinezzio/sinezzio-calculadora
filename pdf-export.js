@@ -12,14 +12,14 @@ function build(report){
  function start(){ops=[];y=H-M;text('SINEZZIO COMMERCE',M,y,12,true,'0.75 0.23 0.08');y-=23;text('Relatório de precificação',M,y,20,true);y-=20;text(`${report.platform} / ${report.date}`,M,y,9);y-=26;}
  function end(){text(`Simulação estimada / dados locais / página ${pages.length+1}`,M,26,8,false,'0.4 0.43 0.48');pages.push(ops.join('\n'));}
  function room(h){if(y-h<55){end();start();}}
- function paragraph(s,size=10){for(const line of wrap(s,W-2*M,size)){room(size+5);text(line,M,y,size);y-=size+5;}y-=6;}
- function section(title){room(42);y-=6;ops.push(`0.85 0.87 0.9 RG 0.5 w ${M} ${y+8} m ${W-M} ${y+8} l S`);text(title,M,y-10,12,true);y-=26;}
+ function paragraph(s,size=10){const lines=wrap(s,W-2*M,size);if(lines.length*(size+5)<H-160)room(lines.length*(size+5)+6);for(const line of lines){room(size+5);text(line,M,y,size);y-=size+5;}y-=6;}
+ function section(title){room(80);y-=6;ops.push(`0.85 0.87 0.9 RG 0.5 w ${M} ${y+8} m ${W-M} ${y+8} l S`);text(title,M,y-10,12,true);y-=26;}
  function row(label,value,bold=false){const valueLines=wrap(value,160);const labelLines=wrap(label,320);const h=Math.max(valueLines.length,labelLines.length)*13;room(h+3);labelLines.forEach((s,i)=>text(s,M,y-i*13,10,bold));valueLines.forEach((s,i)=>text(s,W-M-width(s),y-i*13,10,bold));y-=h+3;}
  start();paragraph(report.product,12);section('Resultado por unidade');for(const r of report.results)row(r[0],r[1],true);
  section('Composição financeira');for(const r of report.breakdown)row(...r);
  section('Cenários de preço');for(const r of report.scenarios)paragraph(r);
  section('Observações');for(const n of report.notes)paragraph(n,9);
- end();start();section('Dados da simulação');for(const group of report.inputs){section(group.title);for(const r of group.rows)row(...r);}
+ section('Dados da simulação');for(const group of report.inputs){section(group.title);for(const r of group.rows)row(...r);}
  section('Premissas');paragraph('Tarifas estimadas. Confira os custos no marketplace antes de definir o preço. Dados e cálculos não são enviados a servidores.',9);end();
  const objects=['<< /Type /Catalog /Pages 2 0 R >>','', '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'];const refs=[];
  for(const stream of pages){const contentId=objects.length+1;objects.push(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);const pageId=objects.length+1;objects.push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${contentId} 0 R >>`);refs.push(pageId+' 0 R');}
