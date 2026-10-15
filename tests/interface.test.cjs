@@ -24,5 +24,18 @@ function edit(id,v){els[id].value=String(v);els[id].fire('input');els[id].fire('
  els.exportPdf.click();assert.ok(report.breakdown.some(r=>r[0]==='Rateio do DAS'&&r[1].includes('8,21')));assert.ok(report.results.find(r=>r[0]==='Lucro gerencial')[1].includes('34,18'));
  els.chooseAutomatic.click();assert.equal(els.pricingGoal.value,'heating');assert.ok(context.lastResult.margin>=.05-1e-8);const warmPrice=Number(els.price.value);edit('safetyMargin',10);assert.ok(Number(els.price.value)>warmPrice);assert.ok(context.lastResult.margin>=.1-1e-8);els.chooseManual.click();const keepPrice=els.price.value;edit('safetyMargin',5);assert.equal(els.price.value,keepPrice);edit('quickProduct','novo');assert.equal(els.cost.value,'');assert.equal(els.ship.value,0);assert.equal(els.allocate.checked,true);
  edit('regime','percent');assert.ok(els.allocationCaption.textContent.includes('DAS MEI não incluído'));edit('regime','mei');edit('orders',0);assert.ok(els.allocationCaption.textContent.includes('Rateio pendente'));edit('orders',10);
+
+ // Required inputs are visible and individually identified after changing channels.
+ els.newProduct.click();edit('cost',60);edit('price',99.9);els.amzBtn.click();
+ assert.equal(els.requiredInputs.attrs['class:hide'],false);
+ for(const id of ['category','wt','len','wid','hei']){assert.ok(context.requiredPending.includes(id),id);assert.equal(els[id].attrs['aria-required'],'true');assert.equal(els[id].attrs['aria-invalid'],'true');}
+ edit('category','cozinha');edit('wt',1);edit('len',20);edit('wid',15);edit('hei',10);
+ assert.equal(context.lastResult.complete,true);assert.equal(els.missingInputs.attrs['class:hide'],true);assert.notEqual(els.profit.textContent,'—');
+ edit('fulfill','own');assert.equal(els.requiredWrap_wt.attrs['class:hide'],true);assert.equal(els.requiredWrap_logManual.attrs['class:hide'],false);assert.ok(context.requiredPending.includes('logManual'));
+ edit('logManual',0);assert.ok(context.requiredPending.includes('amzVerified'));assert.equal(els.requiredWrap_amzVerified.attrs['class:hide'],false);check('amzVerified');assert.equal(context.lastResult.complete,true);
+ els.mlBtn.click();for(const id of ['mlCategory','mlRate','mlFixed','mlLog'])assert.ok(context.requiredPending.includes(id),id);
+ edit('mlCategory','casa');edit('mlRate',13);edit('mlFixed',4);edit('mlLog',18);assert.equal(context.lastResult.complete,true);assert.equal(context.requiredPending.length,0);assert.notEqual(els.profit.textContent,'—');
+ edit('mlFixed',0);assert.ok(context.requiredPending.includes('mlVerified'));assert.equal(els.requiredWrap_mlVerified.attrs['class:hide'],false);check('mlVerified');assert.equal(context.lastResult.complete,true);
+ els.shoBtn.click();assert.equal(els.requiredInputs.attrs['class:hide'],true);assert.equal(els.wt.attrs['aria-required'],'false');assert.equal(context.lastResult.complete,true);
  console.log('OK integração: migração segura, bloqueios em PDF/CSV/cópia, quatro resultados, metas/aplicação, Queima de Estoque, confirmação ML, Ads, logística Amazon, presets e persistência.');
 })();
