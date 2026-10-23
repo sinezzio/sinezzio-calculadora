@@ -1,7 +1,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const html=fs.readFileSync(__dirname+'/../index.html','utf8');let source=html.match(/<script>([\s\S]*?)<\/script>/)[1];source=source.slice(0,source.indexOf('function fill('))+'globalThis.mobile={parseMoneyInput,initial,calculate,sanitizedState};})();';const ctx={};vm.createContext(ctx);vm.runInContext('Object.hasOwn=undefined;Object.fromEntries=undefined;',ctx);vm.runInContext(source,ctx);const a=ctx.mobile;
-for(const [raw,want] of [['60,00',60],['99,90',99.9],['60.00',60],['1.234,56',1234.56],['0,50',.5],[',5',.5],['60,',60],['','']])assert.equal(a.parseMoneyInput(raw),want,raw);
-for(const raw of ['abc','60,1,2','1.2,34','1,234.56','-5','Infinity','60 reais'])assert.ok(Number.isNaN(a.parseMoneyInput(raw)),raw);
+for(const [raw,want] of [['R$ 60,00',60],['R$\u00a099,90',99.9],['R$ 1.234,56',1234.56],['60,00',60],['99,90',99.9],['60.00',60],['1.234,56',1234.56],['0,50',.5],[',5',.5],['60,',60],['','']])assert.equal(a.parseMoneyInput(raw),want,raw);
+for(const raw of ['abc','60,1,2','1.2,34','1,234.56','-5','Infinity','60 reais','R$','R$ abc','R$ R$ 60','R$ -5'])assert.ok(Number.isNaN(a.parseMoneyInput(raw)),raw);
 const input={...a.initial,cost:a.parseMoneyInput('60,00'),price:a.parseMoneyInput('99,90'),allocate:false};assert.equal(a.calculate(input.price,input).complete,true);assert.ok(Math.abs(a.calculate(input.price,input).payout-69.91)<1e-7);assert.ok(Math.abs(a.calculate(input.price,input).profit-9.91)<1e-7);
 const saved=a.sanitizedState({platform:'shopee',cost:60,price:99.9});assert.equal(saved.cost,60);
 assert.equal(source.includes('Object.hasOwn('),false);assert.equal(source.includes('Object.fromEntries('),false);

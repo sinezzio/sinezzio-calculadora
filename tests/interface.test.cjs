@@ -60,6 +60,15 @@ function edit(id,v){els[id].value=String(v);els[id].fire('input');els[id].fire('
  els.shoBtn.click();els.chooseManual.click();edit('cost','60,00');edit('price','99,90');edit('pack',0);edit('ship',0);edit('risk',0);edit('adsFixed',0);edit('adsPct',0);check('allocate',false);
  assert.equal(context.lastResult.complete,true);assert.ok(Math.abs(context.lastResult.payout-69.91)<1e-7);assert.ok(Math.abs(context.lastResult.afterAds-9.91)<1e-7);assert.equal(els.bootStatus.attrs['class:hide'],true);
  edit('cost','1.234,56');assert.equal(context.lastResult.cogs,1234.56);edit('cost','60,001');assert.equal(context.lastResult.complete,false);edit('cost','60,00');edit('price','abc');assert.equal(context.lastResult.complete,false);edit('price','99,90');assert.equal(context.lastResult.complete,true);
+ // Simple sale must work with currency pasted and optional additions cleared.
+ edit('cost','R$ 60,00');edit('price','R$ 99,90');
+ for(const id of ['pack','ship','inbound','other','platformExtra','risk','adsFixed','adsPct','sellerDiscount','shippingRevenue','monthly','amzMonthly','pixPct'])edit(id,'');
+ assert.equal(context.lastResult.complete,true);assert.ok(els.mainCommission.textContent.includes('29,99'));assert.ok(els.mainPayout.textContent.includes('69,91'));assert.ok(els.mainAfterAds.textContent.includes('9,91'));assert.ok(els.simpleMargin.textContent.includes('9,92'));assert.equal(els.saleDetails.open,false);
+ check('allocate');assert.equal(context.lastResult.complete,true);assert.ok(els.profit.textContent.includes('1,71'));
+ edit('pack','R$ 3,00');assert.ok(els.mainAfterAds.textContent.includes('6,91'));edit('pack','abc');assert.equal(context.lastResult.complete,false);edit('pack','');assert.equal(context.lastResult.complete,true);
+ edit('das','');assert.equal(context.lastResult.complete,false);edit('das','82,05');assert.equal(context.lastResult.complete,true);
+ edit('cost','');assert.equal(context.lastResult.complete,false);edit('cost','60');edit('price','');assert.equal(context.lastResult.complete,false);edit('price','99,90');assert.equal(context.lastResult.complete,true);
+ els.amzBtn.click();assert.equal(context.lastResult.complete,false);assert.ok(context.requiredPending.includes('category'));els.mlBtn.click();assert.ok(context.requiredPending.includes('mlFixed'));assert.ok(context.requiredPending.includes('mlLog'));assert.equal(context.lastResult.complete,false);els.shoBtn.click();assert.equal(context.lastResult.complete,true);
  console.log('OK integração: migração segura, bloqueios em PDF/CSV/cópia, quatro resultados, metas/aplicação, Queima de Estoque, confirmação ML, Ads, logística Amazon, presets e persistência.');
 })();
 
