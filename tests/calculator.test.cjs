@@ -1,5 +1,6 @@
+const syntheticReceipts=[{price:90,displayDiscount:4.5,netFees:24.1,commission:10,service:14.1,shipping:0,payout:61.4},{price:150,displayDiscount:7.5,netFees:33.5,commission:12,service:21.5,shipping:0,payout:109}];
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
-const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');let script=html.match(/<script>([\s\S]*?)<\/script>/)[1];script=script.slice(0,script.indexOf('function fill('))+'globalThis.api={initial,calculate,commission,logistic,solve,billable,automaticPrice,shopeeReceiptReferences};})();';const ctx={};vm.runInNewContext(script,ctx);const api=ctx.api;const blankDefaults={...api.initial};
+const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');let script=html.match(/<script>([\s\S]*?)<\/script>/)[1];script=script.slice(0,script.indexOf('function fill('))+'globalThis.api={initial,calculate,commission,logistic,solve,billable,automaticPrice};})();';const ctx={};vm.runInNewContext(script,ctx);const api=ctx.api;const blankDefaults={...api.initial};
 // Explicit historical scenario used by the financial regression cases.
 api.initial={...api.initial,pricingMode:"automatic",cost:55,price:119,currentPrice:119,pack:3,risk:2,allocate:true,category:"cozinha",wt:2.3,len:35,wid:27,hei:25,mlCategory:"eletro"};
 let count=0;function test(n,f){f();count++;console.log('OK '+n);}const near=(a,b,t=1e-7)=>assert.ok(Math.abs(a-b)<t,`${a} != ${b}`);const d=(p={})=>({...api.initial,shopeeVerified:true,amzVerified:true,...p});
@@ -35,9 +36,10 @@ test('Kit exige logística da embalagem inteira e cotação manual revalidada',(
 test('HTML: ids e labels íntegros; mobile usa campos em coluna',()=>{const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(x=>x[1]);assert.equal(new Set(ids).size,ids.length);for(const m of html.matchAll(/\bfor="([^"]+)"/g))assert.ok(ids.includes(m[1]),m[1]);assert.ok(html.includes('.grid2,.grid3{grid-template-columns:1fr}'));});
 test('Novo produto começa vazio; nenhum peso, categoria ou custo demonstrativo inventado',()=>{assert.equal(blankDefaults.cost,'');assert.equal(blankDefaults.prod,'Novo produto');assert.equal(blankDefaults.wt,0);assert.equal(blankDefaults.category,'');assert.equal(api.automaticPrice(blankDefaults).price,null);const x={...blankDefaults,pricingMode:'automatic',cost:60};const p=api.automaticPrice(x).price;assert.ok(p>0);assert.ok(api.calculate(p,{...x,price:p}).margin>=.2-1e-8);assert.equal(api.calculate(p,{...x,price:p}).verified,false);assert.equal(api.automaticPrice({...x,platform:'amazon'}).price,null);assert.equal(api.automaticPrice({...x,platform:'mercadolivre'}).price,null);});
 
-test('Dois pedidos reais: Pix/cupom + taxas líquidas conciliam o repasse sem duplicação',()=>{
- for(const r of api.shopeeReceiptReferences){near(r.commission+r.service,r.netFees);near(r.price-r.displayDiscount-r.netFees+r.shipping,r.payout);const x=api.calculate(r.price,d({price:r.price,cost:60,pack:0,risk:0,allocate:false,pixPct:5}));near(x.cm.all,r.displayDiscount+r.netFees);near(x.payout,r.payout);near(x.afterAds,9.91);near(12.1-42.1+30,0);}
+test('Cenários ilustrativos: Pix e taxas líquidas conciliam o repasse sem duplicação',()=>{
+ for(const r of syntheticReceipts){near(r.commission+r.service,r.netFees);near(r.price-r.displayDiscount-r.netFees+r.shipping,r.payout);const x=api.calculate(r.price,d({price:r.price,cost:40,pack:0,risk:0,allocate:false,pixPct:5}));near(x.cm.all,r.displayDiscount+r.netFees);near(x.payout,r.payout);near(x.afterAds,r.payout-40);}
 });
 test('Preço acima de R$100 recalcula a faixa; não extrapola o ganho do pedido de R$99,90',()=>{for(const [price,payout,left] of [[99.9,69.91,9.91],[109.9,74.51,14.51],[119.9,83.11,23.11]]){const x=api.calculate(price,d({price,cost:60,pack:0,risk:0,allocate:false}));near(x.payout,payout);near(x.afterAds,left);}});
 console.log(`\n${count} grupos passaram.`);
+
 

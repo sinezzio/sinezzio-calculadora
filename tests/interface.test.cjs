@@ -69,6 +69,22 @@ function edit(id,v){els[id].value=String(v);els[id].fire('input');els[id].fire('
  edit('das','');assert.equal(context.lastResult.complete,false);edit('das','82,05');assert.equal(context.lastResult.complete,true);
  edit('cost','');assert.equal(context.lastResult.complete,false);edit('cost','60');edit('price','');assert.equal(context.lastResult.complete,false);edit('price','99,90');assert.equal(context.lastResult.complete,true);
  els.amzBtn.click();assert.equal(context.lastResult.complete,false);assert.ok(context.requiredPending.includes('category'));els.mlBtn.click();assert.ok(context.requiredPending.includes('mlFixed'));assert.ok(context.requiredPending.includes('mlLog'));assert.equal(context.lastResult.complete,false);els.shoBtn.click();assert.equal(context.lastResult.complete,true);
+ // Sale profit is distinct from the monthly allocation, including illustrative totals.
+ els.shoBtn.click();els.chooseManual.click();
+ for(const id of ['pack','ship','inbound','other','platformExtra','risk','adsFixed','adsPct','sellerDiscount','shippingRevenue','monthly','amzMonthly'])edit(id,0);
+ edit('das',82.05);edit('orders',10);edit('qty',1);check('allocate');
+ for(const [price,cost,payout,profit] of [[99.9,60,'69,91','9,91'],[119.9,60,'83,11','23,11'],[109.9,60,'74,51','14,51'],[99.9,55,'69,91','14,91']]){
+ edit('cost',cost);edit('price',price);assert.equal(context.lastResult.complete,true);assert.ok(els.mainPayout.textContent.includes(payout));assert.ok(els.saleProfitValue.textContent.includes(profit));assert.ok(els.mainSupplier.textContent.includes(String(cost)+',00'));
+ }
+ edit('cost',60);edit('price',99.9);assert.ok(els.saleProfitMargin.textContent.includes('9,92'));assert.ok(els.profit.textContent.includes('1,71'));assert.equal(els.monthlyPreview.textContent,els.profit.textContent);assert.ok(els.commissionFormula.textContent.includes('14,00%'));assert.ok(els.saleProfitEquation.textContent.includes('69,91'));
+ edit('pack',3);edit('risk',2);assert.ok(els.saleProfitValue.textContent.includes('4,91'));assert.ok(els.saleExtrasSummary.textContent.includes('5,00'));assert.ok(els.profit.textContent.includes('3,29'));assert.equal(els.saleProfitBox.attrs['class:negative'],false);
+ edit('cost',80);assert.equal(els.saleProfitBox.attrs['class:negative'],true);edit('cost','');assert.equal(els.saleProfitValue.textContent,'—');assert.equal(els.saleProfitEquation.textContent,'');edit('cost',60);edit('price','');assert.equal(els.saleProfitValue.textContent,'—');
+ edit('price',99.9);edit('qty',2);assert.ok(els.mainSupplier.textContent.includes('120,00'));assert.ok(els.supplierCaption.textContent.includes('2 unidades'));assert.equal(els.saleProfitBox.attrs['class:negative'],true);
+ els.amzBtn.click();edit('category','');assert.equal(els.saleProfitValue.textContent,'—');els.mlBtn.click();assert.equal(els.saleProfitValue.textContent,'—');
+ // High-price reference tariff must calculate without a manual quote.
+ els.shoBtn.click();els.chooseManual.click();edit('qty',1);for(const id of ['pack','risk','ship','inbound','adsFixed','adsPct','other','monthly','amzMonthly'])edit(id,0);edit('cost','1.750,00');edit('price','4.000,00');check('allocate',false);
+ assert.equal(context.lastResult.complete,true);assert.ok(els.mainCommission.textContent.includes('586,00'));assert.ok(els.mainPayout.textContent.includes('3.414,00'));assert.ok(els.saleProfitValue.textContent.includes('1.664,00'));assert.ok(els.saleProfitMargin.textContent.includes('41,60'));assert.equal(els.shoFeeMode.value,'reference');
+ els.chooseAutomatic.click();edit('pricingGoal','margin');edit('target',20);assert.equal(context.lastResult.complete,true);assert.ok(Number(els.price.value)>500);assert.ok(context.lastResult.margin>=.2-1e-8);assert.equal(els.price.readOnly,true);
  console.log('OK integração: migração segura, bloqueios em PDF/CSV/cópia, quatro resultados, metas/aplicação, Queima de Estoque, confirmação ML, Ads, logística Amazon, presets e persistência.');
 })();
 

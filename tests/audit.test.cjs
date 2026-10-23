@@ -31,11 +31,12 @@ test('DAS é custo mensal único, por unidade física e compartilhado entre loja
  const kit=base({qty:2});near(a.calculate(100,kit).dasAllocated*5,82.05);
  const off=a.calculate(100,{...kit,allocate:false});near(off.dasAllocated,0);near(off.tax,0);
 });
-test('Faixas Shopee exatas, sem extrapolar acima da tabela fornecida; Pix não reduz repasse',()=>{
- for(const [price,fixed,rate] of [[1,4.5,.2],[79.99,4.5,.2],[80,16,.14],[99.99,16,.14],[100,20,.14],[199.99,20,.14],[200,26,.14],[499.99,26,.14]]){
+test('Faixas Shopee até valores altos pela tabela CNPJ; Pix não reduz repasse',()=>{
+ for(const [price,fixed,rate] of [[1,4.5,.2],[79.99,4.5,.2],[80,16,.14],[99.99,16,.14],[100,20,.14],[199.99,20,.14],[200,26,.14],[499.99,26,.14],[500,26,.14],[500.01,26,.14],[1000,26,.14],[5000,26,.14]]){
   const x=a.calculate(price,base({price}));assert.equal(x.complete,true);near(x.cm.fixed,fixed);near(x.cm.percent,Math.round(price*rate*100)/100);
  }
- assert.equal(a.calculate(500,base({price:500})).complete,false);
+ const highValue=a.calculate(4800,base({price:4800,cost:1700,allocate:false}));near(highValue.cm.all,698);near(highValue.payout,4102);near(highValue.profit,2402);near(highValue.margin,2402/4800);
+ const ideal=a.solve(base({price:4800,cost:1700,allocate:false}),'margin',.2);assert.ok(ideal>500);const candidate=a.calculate(ideal,base({price:ideal,cost:1700,allocate:false}));assert.ok(candidate.complete&&candidate.margin>=.2-1e-8);assert.ok(a.calculate(ideal-.01,base({price:ideal-.01,cost:1700,allocate:false})).margin<.2); 
  const x=a.calculate(119,base({price:119})),y=a.calculate(119,base({price:119,pixPct:5}));near(x.payout,y.payout);near(x.profit,y.profit);
 });
 test('Um preço maior pode dar menos lucro: 79,99/80 e 99,99/100 e 199,99/200',()=>{

@@ -1,8 +1,9 @@
+const syntheticReceipts=[{price:90,displayDiscount:4.5,netFees:24.1,commission:10,service:14.1,shipping:0,payout:61.4},{price:150,displayDiscount:7.5,netFees:33.5,commission:12,service:21.5,shipping:0,payout:109}];
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
-const html=fs.readFileSync(__dirname+'/../index.html','utf8');let script=html.match(/<script>([\s\S]*?)<\/script>/)[1];script=script.slice(0,script.indexOf('function fill('))+'globalThis.api={initial,calculate,logistic,automaticPrice,solve,requiredFields,manualScope,shopeeReceiptReferences};})();';const ctx={};vm.runInNewContext(script,ctx);const a=ctx.api;
+const html=fs.readFileSync(__dirname+'/../index.html','utf8');let script=html.match(/<script>([\s\S]*?)<\/script>/)[1];script=script.slice(0,script.indexOf('function fill('))+'globalThis.api={initial,calculate,logistic,automaticPrice,solve,requiredFields,manualScope};})();';const ctx={};vm.runInNewContext(script,ctx);const a=ctx.api;
 const base=(patch={})=>({...a.initial,cost:60,price:99.9,category:'cozinha',wt:1,len:20,wid:15,hei:10,amzVerified:true,...patch});const near=(x,y)=>assert.ok(Math.abs(x-y)<1e-7,`${x} != ${y}`);let n=0;function test(label,fn){fn();n++;console.log('OK '+label);}
-test('Shopee mantém todos os componentes dos pedidos reais, Pix e resultado',()=>{
- for(const r of a.shopeeReceiptReferences){const d=base({allocate:false,pixPct:5}),x=a.calculate(r.price,d);assert.equal(x.complete,true);near(x.payout,r.payout);near(x.cm.all,r.displayDiscount+r.netFees);near(x.afterAds,9.91);near(x.profit,9.91);near(a.calculate(r.price,{...d,pixPct:0}).payout,r.payout);}
+test('Shopee concilia componentes ilustrativos de Pix e repasse',()=>{
+ for(const r of syntheticReceipts){const d=base({cost:40,allocate:false,pixPct:5}),x=a.calculate(r.price,d);assert.equal(x.complete,true);near(x.payout,r.payout);near(x.cm.all,r.displayDiscount+r.netFees);near(x.afterAds,r.payout-40);near(x.profit,r.payout-40);near(a.calculate(r.price,{...d,pixPct:0}).payout,r.payout);}
 });
 test('Centro-Oeste/Norte/Nordeste não herda tabela do interior Sul/Sudeste',()=>{
  const d=base({platform:'amazon',region:'norte',price:200,wt:6});assert.equal(a.manualScope(d),true);assert.ok(Number.isNaN(a.logistic(200,d).value));assert.equal(a.calculate(200,d).complete,false);assert.ok(a.requiredFields(d).includes('logManual'));assert.equal(a.requiredFields(d).includes('wt'),false);
