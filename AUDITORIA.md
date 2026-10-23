@@ -191,3 +191,14 @@ Oito novos grupos cobrem referências Shopee, origem DBA sem tabela, precisão m
 Inspeção no navegador desktop confirmou carregamento da fonte e o exemplo Shopee: custo R$ 60 + venda R$ 99,90 = repasse R$ 69,91, sobra antes de rateios R$ 9,91 e gerencial R$ 1,71 com DAS de R$ 82,05 distribuído por 10 unidades/mês. Ajustado o enquadramento da logo original recortando apenas margens vazias no layout. Rótulos de lucro-alvo e deduções passaram a dizer “por anúncio” para evitar confusão com custos unitários de kits; as fórmulas permanecem por anúncio. A conferência em aparelho iPhone não foi realizada.
 
 Na Amazon, o detalhamento agora também mantém comissão em branco até a escolha de uma categoria válida, em vez de mostrar o fallback de 15% com a simulação incompleta. Integração de interface cobre esse estado. A referência dos comprovantes Shopee fica visível somente na aba Shopee.
+
+
+## Acesso mobile, entrada decimal e cores — 23/10/2026
+
+Relato do usuário: não consegue acessar pelo celular. A descrição não diferencia erro de rede, navegador interno, inicialização ou conteúdo inacessível. A tentativa de obter esse detalhe não recebeu resposta; não se atribuiu uma causa não comprovada.
+
+Ajustes aplicados: entradas de moeda como texto com inputmode decimal e parser estrito de vírgula/ponto; preservação dos campos e dos dados salvos; JavaScript distribuído com alvo ES2018, sem dependência de Object.hasOwn/Object.fromEntries; indicação estática de recuperação quando a inicialização não termina; logos locais e cores por canal; botões de toque, navegação de canais em três colunas e barra acessível durante a rolagem. Nenhuma limitação de zoom foi imposta.
+
+Métodos logistic, commission, validate, calculate, saleLedger, heatingPrice, solve e automaticPrice foram comparados como código normalizado e permaneceram idênticos. A precisão monetária é validada pelo motor existente depois da conversão da entrada. `99,90` e `99.90` representam o mesmo valor; `60,001` é recusado, sem truncar centavos.
+
+Testes: integração de interface executada com Object.hasOwn e Object.fromEntries indisponíveis, preservação de estado, entrada decimal brasileira, erros de entrada, inicialização e arquivos de logo sem conteúdo ativo. O arquivo tests/mobile-preview.html permite a inspeção do aplicativo real em larguras 320/390/430 px. A inspeção responsiva em navegador não equivale a testar um aparelho iPhone ou sua rede.

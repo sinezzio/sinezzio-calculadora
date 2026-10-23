@@ -1,0 +1,11 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const html=fs.readFileSync(__dirname+'/../index.html','utf8');let source=html.match(/<script>([\s\S]*?)<\/script>/)[1];source=source.slice(0,source.indexOf('function fill('))+'globalThis.mobile={parseMoneyInput,initial,calculate,sanitizedState};})();';const ctx={};vm.createContext(ctx);vm.runInContext('Object.hasOwn=undefined;Object.fromEntries=undefined;',ctx);vm.runInContext(source,ctx);const a=ctx.mobile;
+for(const [raw,want] of [['60,00',60],['99,90',99.9],['60.00',60],['1.234,56',1234.56],['0,50',.5],[',5',.5],['60,',60],['','']])assert.equal(a.parseMoneyInput(raw),want,raw);
+for(const raw of ['abc','60,1,2','1.2,34','1,234.56','-5','Infinity','60 reais'])assert.ok(Number.isNaN(a.parseMoneyInput(raw)),raw);
+const input={...a.initial,cost:a.parseMoneyInput('60,00'),price:a.parseMoneyInput('99,90'),allocate:false};assert.equal(a.calculate(input.price,input).complete,true);assert.ok(Math.abs(a.calculate(input.price,input).payout-69.91)<1e-7);assert.ok(Math.abs(a.calculate(input.price,input).profit-9.91)<1e-7);
+const saved=a.sanitizedState({platform:'shopee',cost:60,price:99.9});assert.equal(saved.cost,60);
+assert.equal(source.includes('Object.hasOwn('),false);assert.equal(source.includes('Object.fromEntries('),false);
+for(const id of ['cost','price','targetCash']){const tag=html.match(new RegExp('<input\\b[^>]*id="'+id+'"[^>]*>'))[0];assert.ok(tag.includes('type="text"'));assert.ok(tag.includes('inputmode="decimal"'));}
+for(const file of ['shopee.svg','amazon.svg','mercado-livre.svg']){const content=fs.readFileSync(__dirname+'/../assets/'+file,'utf8');assert.ok(content.includes('<svg'));assert.equal(/<script\b|\bon[a-z]+\s*=|(?:href|src)\s*=\s*["']https?:/i.test(content),false);assert.ok(html.includes('assets/'+file));}
+assert.ok(html.includes('grid-template-columns:repeat(3,minmax(0,1fr))'));assert.ok(html.includes('min-height:76px'));assert.ok(html.includes('viewport-fit=cover'));assert.ok(html.includes('id="bootStatus"'));assert.ok(fs.readFileSync(__dirname+'/mobile-preview.html','utf8').includes('data-width="320"'));
+console.log('OK acesso: vírgula decimal, APIs antigas ausentes, estado salvo, logos locais e controles mobile.');

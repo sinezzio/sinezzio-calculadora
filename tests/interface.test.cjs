@@ -7,6 +7,7 @@ const presets=['liq','bat','tor','teste','novo'].map(p=>{const e=new El();e.data
 const stored={'sinezzio-calculator-v2':JSON.stringify({platform:'mercadolivre',price:119,cost:55,mlRate:11,mlFixed:0,mlLog:0,mlVerified:true})};let copied='',csv='',pdfBytes,report;
 const context={document:{getElementById:id=>els[id]||null,body:{dataset:{}},querySelectorAll:()=>presets,createElement:()=>new El()},localStorage:{getItem:k=>stored[k]??null,setItem:(k,v)=>stored[k]=v},navigator:{clipboard:{writeText:async t=>{copied=t;}}},Blob:class{constructor(v,o){if(o?.type==='application/pdf')pdfBytes=v[0];else csv=v.join('');}},URL:{createObjectURL:()=> 'blob:test',revokeObjectURL:()=>{}},setTimeout:()=>{},confirm:()=>true,prompt:()=>{}};context.window=context;
 vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../pdf-export.js'),'utf8'),context);const actualBuild=context.SinezzioPDF.build;context.SinezzioPDF.build=r=>{report=r;return actualBuild(r);};
+vm.runInNewContext('Object.hasOwn=undefined;Object.fromEntries=undefined;',context);
 vm.runInNewContext(html.match(/<script>([\s\S]*?)<\/script>/)[1],context);
 function edit(id,v){els[id].value=String(v);els[id].fire('input');els[id].fire('change');}function check(id,on=true){els[id].checked=on;els[id].fire('change');}
 (async()=>{
@@ -55,6 +56,10 @@ function edit(id,v){els[id].value=String(v);els[id].fire('input');els[id].fire('
  const corrupt='{broken';stored['sinezzio-simulations-v1']=corrupt;els.saveSimulation.click();assert.equal(stored['sinezzio-simulations-v1'],corrupt);assert.ok(els.simulationStatus.textContent.includes('Nenhum registro'));
  els.exportSimulations.click();assert.equal(JSON.parse(csv).saved.unreadableRaw,corrupt);
  delete stored['sinezzio-simulations-v1'];edit('targetCash','');els.chooseAutomatic.click();edit('targetCash','');assert.equal(els.profit.textContent,'—');assert.equal(els.decisionSummary.children.at(-2).children[1].textContent,'—');
+ // Decimal keyboard and older browser APIs must not block the calculator.
+ els.shoBtn.click();els.chooseManual.click();edit('cost','60,00');edit('price','99,90');edit('pack',0);edit('ship',0);edit('risk',0);edit('adsFixed',0);edit('adsPct',0);check('allocate',false);
+ assert.equal(context.lastResult.complete,true);assert.ok(Math.abs(context.lastResult.payout-69.91)<1e-7);assert.ok(Math.abs(context.lastResult.afterAds-9.91)<1e-7);assert.equal(els.bootStatus.attrs['class:hide'],true);
+ edit('cost','1.234,56');assert.equal(context.lastResult.cogs,1234.56);edit('cost','60,001');assert.equal(context.lastResult.complete,false);edit('cost','60,00');edit('price','abc');assert.equal(context.lastResult.complete,false);edit('price','99,90');assert.equal(context.lastResult.complete,true);
  console.log('OK integração: migração segura, bloqueios em PDF/CSV/cópia, quatro resultados, metas/aplicação, Queima de Estoque, confirmação ML, Ads, logística Amazon, presets e persistência.');
 })();
 

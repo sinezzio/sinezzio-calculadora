@@ -74,3 +74,16 @@ Correções: Centro-Oeste/Norte/Nordeste agora exigem cotação manual da logís
 Conferência comercial: https://venda.amazon.com.br/precos e https://venda.amazon.com.br/cresca/dba consultadas em 23/10/2026. Comissões exibidas e tarifas DBA abaixo de R$ 79 conferem com a referência. A matriz DBA acima de R$ 79 não foi integralmente revalidada: a página de detalhes direcionou a uma aplicação dinâmica. Continua identificada como estimativa de referência e exige conferência na conta. Mercado Livre permanece com cotação por anúncio; não foi introduzida uma taxa genérica.
 
 Validação adicional: `node tests/revision-20261023.test.cjs`. Todos os arquivos: `node --test tests/*.test.cjs`. A fonte Ubuntu é distribuída com a licença em assets/ubuntu-LICENSE.txt. Nenhuma conta de marketplace é acessada.
+
+
+## Acesso mobile e identidade dos canais — 23/10/2026
+
+Campos monetários aceitam vírgula ou ponto decimal, inclusive `99,90`, `99.90` e `1.234,56`, com teclado decimal. Valores com frações de centavo continuam bloqueados. O HTML usa JavaScript compatível com ES2018; `hasOwn` e a montagem de objetos não exigem `Object.hasOwn` nem `Object.fromEntries`. A exportação PDF segue o mesmo alvo de compatibilidade.
+
+Shopee, Amazon e Mercado Livre têm logos locais, cores de canal, seleção por toque e barra de canais acessível em telas estreitas. Resultados negativos permanecem vermelhos. Há mensagem inicial de recuperação se o JavaScript não iniciar; ela desaparece após a inicialização bem-sucedida. Os dados locais são preservados.
+
+Para verificar layout, `tests/mobile-preview.html` abre o próprio aplicativo dentro de uma tela de 320, 390 ou 430 px. Isso testa os breakpoints e os controles, sem emular Safari/iOS. Não confirma acesso na rede ou no aparelho específico do usuário. O motivo exato da falha relatada no celular não foi identificado a partir da descrição disponível.
+
+Regressão: `node --test tests/*.test.cjs`, incluindo inicialização e salvamento com APIs recentes ausentes, teclado com vírgula e verificação da Shopee. Os oito métodos financeiros principais foram comparados antes/depois como código normalizado e não mudaram.
+
+Ativos: os símbolos Shopee/Amazon já utilizados no ERP foram reaproveitados para identificar os canais. A marca textual Mercado Livre vem de https://commons.wikimedia.org/wiki/File:Mercado_Livre_wordmark_(Portuguese_version).svg (arte atribuída ao Mercado Livre), servida localmente e sem scripts ou referências externas. As marcas identificam os canais simulados e não representam integração ou endosso.
