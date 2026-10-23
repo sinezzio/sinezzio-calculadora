@@ -156,3 +156,21 @@ Shopee: preço e comissão de referência são calculados com custo + margem, se
 Mercado Livre: categoria e tipo de anúncio passaram para o fluxo básico. A faixa geral pública (Clássico 10–14%, Premium 15–19%) aparece como faixa, nunca como taxa exata da categoria. Comissão específica, tarifa fixa e frete ainda exigem cotação; sem esses dados, preço/lucro completos permanecem bloqueados. Fonte oficial de faixa: https://vendedores.mercadolivre.com.br/nota/como-funcionam-as-taxas-do-mercado-livre . A documentação oficial de custos exige contexto de logística e anúncio. As páginas de ajuda 40538 e 48392 não ficaram acessíveis para leitura nesta consulta. Nenhuma tabela de frete não confirmada foi importada.
 
 Validação: 31 grupos matemáticos/estruturais e integração de novo produto, migração, custos salvos, PDF, CSV, cópia, modos de preço e bloqueios passaram. A validação comercial depende das tarifas aplicáveis à conta; os testes não confirmam uma política que não pôde ser consultada.
+
+
+## Avaliação comparativa e melhorias próprias — 23/10/2026
+
+Referências públicas analisadas como funcionalidades, sem copiar implementação, instalar pacotes ou executar projetos externos:
+
+- AIHM / BulkCalc: https://github.com/itsukiken1/aihm — comparação de produtos em lote e cálculos locais. Aproveitada a ideia de manter simulações identificadas; não foi adotada sua logística internacional.
+- SourceCalc: https://github.com/itsukiken1/sourcecalc — decomposição de custo, margem e ROI no contexto de compra. Adotada análise de custo máximo aceitável usando nosso próprio motor. Não foi instalada extensão, não foi implementada coleta de páginas.
+- FBATools: https://github.com/qq136692547-cmyk/fbatools-site — página tools/profit-calculator/index.html, comparação FBA/FBM e ponto de equilíbrio. Aproveitado o princípio de comparar condições de forma explícita, sem importar taxas estrangeiras nem fórmulas de terceiros.
+- Referência oficial de escopo financeiro: https://venda.amazon.com.br/sellerblog/descubra-como-se-planejar-melhor-para-vender-em-datas-sazonais — distingue custo de aquisição, logística, publicidade e margem. Não usada para substituir tarifas da conta.
+
+A base existente já cobria alterações de faixa, peso cúbico, cotações manuais delimitadas, Ads em dinheiro e percentual, DAS mensal, custo por peça de kit, exportação e memória de cálculo. Não foi reconstruída.
+
+Implementação original: custo máximo unitário que preserva a meta atual; cenários isolados de variação do preço, custo e Ads; cobertura de custos mensais com hipótese de um único produto; registros locais de até 20 simulações e exportação JSON. Valores exibidos como estimativas. Em kits, volume mensal é convertido em vendas completas do anúncio, sem duplicar DAS/fixos. Resultados não aparecem enquanto o preço automático está pendente.
+
+Proteções: campos locais são lidos por lista permitida, com tipos primitivos e sem chaves de protótipo; texto do usuário aparece por textContent; dados salvos ilegíveis não são sobrescritos. Carregar uma simulação exige confirmação para substituir os campos atuais e desmarca confirmações de tarifas. A calculadora permanece sem dependências externas, fetch, SDK ou credenciais de lojas. Nenhum dado da loja ou anúncio foi alterado.
+
+Validação: 33 grupos matemáticos/estruturais anteriores, 8 grupos de auditoria com Decimal e reconciliação de 120 cenários, 11 grupos novos de decisões/segurança e integração de interface simulada com PDF, CSV, cópia, salvamento, carregamento e preservação de armazenamento inválido. A inspeção visual em navegador não foi concluída por bloqueio da política do ambiente. Os testes não atestam vigência comercial das tarifas nem garantem ausência de todos os defeitos.

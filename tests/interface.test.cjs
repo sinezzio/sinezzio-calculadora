@@ -45,6 +45,17 @@ function edit(id,v){els[id].value=String(v);els[id].fire('input');els[id].fire('
  els.chooseAutomatic.click();assert.equal(els.pricingGoal.value,'cash');assert.equal(els.cashTargetWrap.attrs['class:hide'],false);edit('targetCash',10);const p10=Number(els.price.value);assert.ok(context.lastResult.profit>=10-1e-8);edit('targetCash',20);assert.ok(Number(els.price.value)>p10);assert.ok(context.lastResult.profit>=20-1e-8);edit('targetCash','');assert.equal(els.salePrice.textContent,'—');edit('targetCash',20);
  els.exportPdf.click();assert.equal(report.results.find(r=>r[0]==='Meta automática')[1],'Lucro em reais');assert.ok(pdfBytes.length>1000);els.export.click();assert.ok(csv.includes('20'));await els.copy.onclick();assert.ok(copied.includes('Lucro em reais'));
  els.chooseManual.click();edit('price',99.9);edit('targetCash',30);assert.equal(Number(els.price.value),99.9);assert.ok(els.mainAfterAds.textContent.includes('9,91'));els.amzBtn.click();assert.equal(els.saleDetails.open,true);
+ // New local scenario tools: save, preserve arbitrary text safely, and revalidate tariffs on load.
+ els.shoBtn.click();edit('cost',60);edit('price',119.9);edit('adsFixed',0);edit('adsPct',0);edit('risk',0);check('shopeeVerified');
+ els.simulationName.value='<img src=x onerror=alert(1)>';els.saveSimulation.click();
+ const saved=JSON.parse(stored['sinezzio-simulations-v1']);assert.equal(saved.length,1);assert.equal(saved[0].name,'<img src=x onerror=alert(1)>');assert.equal(saved[0].input.cost,60);
+ const card=els.savedSimulations.children.at(-1);assert.equal(card.children[0].children[0].textContent,'<img src=x onerror=alert(1)>');assert.equal(card.children[0].children[0].innerHTML,undefined);
+ edit('cost',90);card.children[1].children[0].click();assert.equal(Number(els.cost.value),60);assert.equal(els.shopeeVerified.checked,false);assert.ok(els.simulationStatus.textContent.includes('Reconfira'));
+ els.exportSimulations.click();const backup=JSON.parse(csv);assert.equal(backup.format,'sinezzio-simulations-v1');assert.equal(backup.saved.length,1);assert.equal(backup.current.cost,60);
+ const corrupt='{broken';stored['sinezzio-simulations-v1']=corrupt;els.saveSimulation.click();assert.equal(stored['sinezzio-simulations-v1'],corrupt);assert.ok(els.simulationStatus.textContent.includes('Nenhum registro'));
+ els.exportSimulations.click();assert.equal(JSON.parse(csv).saved.unreadableRaw,corrupt);
+ delete stored['sinezzio-simulations-v1'];edit('targetCash','');els.chooseAutomatic.click();edit('targetCash','');assert.equal(els.profit.textContent,'—');assert.equal(els.decisionSummary.children.at(-2).children[1].textContent,'—');
  console.log('OK integração: migração segura, bloqueios em PDF/CSV/cópia, quatro resultados, metas/aplicação, Queima de Estoque, confirmação ML, Ads, logística Amazon, presets e persistência.');
 })();
+
 

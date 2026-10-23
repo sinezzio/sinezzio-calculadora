@@ -48,3 +48,16 @@ GitHub Pages usa `main` e a pasta raiz; `.nojekyll` preservado. Arquivos: index.
 
 
 Frete recebido no envio próprio/Flex tem campo separado; confirme sua incidência na base de comissão. Não inclua frete retido pela plataforma e não abata duas vezes o recebimento do custo de transporte. ACOS/provisão de perdas usam a receita do produto sem esse crédito.
+
+
+## Ferramentas de decisão — 23/10/2026
+
+Abra **Analisar riscos e comparar simulações**, abaixo dos resultados:
+
+- Custo máximo de compra por unidade para preservar a meta no preço simulado.
+- Testes independentes de preço −5%, custo do produto +10% e Ads +R$5 por anúncio, recalculados pelo motor existente.
+- Equilíbrio e projeção mensal na hipótese explícita de vender exclusivamente o produto simulado; kits completos e custos mensais contados uma única vez.
+- Até 20 simulações nomeadas no navegador, com carregamento mediante confirmação e exportação JSON. Ao carregar, as confirmações de tarifas e embalagem são desmarcadas para nova conferência.
+- Leitura de dados locais limitada aos campos conhecidos e tipos primitivos. Registros de simulações ilegíveis não são sobrescritos; a exportação preserva o conteúdo bruto para recuperação.
+
+Os testes adicionais usam `node tests/decisions.test.cjs`. As ferramentas não estimam demanda, não alteram anúncios e não consultam contas. As tarifas comerciais anteriores continuam como referência e devem ser conferidas pelo usuário.
