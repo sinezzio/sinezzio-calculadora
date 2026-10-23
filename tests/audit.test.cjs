@@ -43,7 +43,7 @@ test('Um preço maior pode dar menos lucro: 79,99/80 e 99,99/100 e 199,99/200',(
  const d=base({cost:46,price:69.9}),p=a.heatingPrice(d);assert.equal(p,78.27);assert.ok(a.calculate(p,{...d,price:p}).profit>0);assert.ok(a.calculate(80,{...d,price:80}).profit<0);
 });
 test('DBA por origem e tarifa zero manual desconhecida bloqueada; ML vazio não inventa lucro',()=>{
- for(const [region,expected] of [['sp',36.95],['capitais',34.45],['interior',36.95],['norte',36.95]])near(a.logistic(200,base({platform:'amazon',wt:6,region})).value,expected);
+ for(const [region,expected] of [['sp',36.95],['capitais',34.45],['interior',36.95]])near(a.logistic(200,base({platform:'amazon',wt:6,region})).value,expected);
  assert.equal(a.calculate(100,base({platform:'amazon',fulfill:'fba',logManual:'',amzVerified:false})).complete,false);
  assert.equal(a.calculate(100,base({platform:'amazon',fulfill:'own',logManual:0,amzVerified:false})).complete,false);
  const d=base({platform:'mercadolivre',mlRate:'',mlFixed:'',mlLog:''});assert.equal(a.calculate(100,d).complete,false);assert.equal(a.solve(d,'cash',0),null);
@@ -65,3 +65,4 @@ test('Soma exata de receitas e despesas em 120 cenários, sem custos duplicados'
  assert.equal(a.calculate(100,base({safetyMargin:''})).complete,true);
 });
 console.log(`${checks} grupos de auditoria adicionais passaram.`);
+

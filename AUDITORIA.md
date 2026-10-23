@@ -174,3 +174,16 @@ Implementação original: custo máximo unitário que preserva a meta atual; cen
 Proteções: campos locais são lidos por lista permitida, com tipos primitivos e sem chaves de protótipo; texto do usuário aparece por textContent; dados salvos ilegíveis não são sobrescritos. Carregar uma simulação exige confirmação para substituir os campos atuais e desmarca confirmações de tarifas. A calculadora permanece sem dependências externas, fetch, SDK ou credenciais de lojas. Nenhum dado da loja ou anúncio foi alterado.
 
 Validação: 33 grupos matemáticos/estruturais anteriores, 8 grupos de auditoria com Decimal e reconciliação de 120 cenários, 11 grupos novos de decisões/segurança e integração de interface simulada com PDF, CSV, cópia, salvamento, carregamento e preservação de armazenamento inválido. A inspeção visual em navegador não foi concluída por bloqueio da política do ambiente. Os testes não atestam vigência comercial das tarifas nem garantem ausência de todos os defeitos.
+
+
+## Reestilização e revisão de precisão — 23/10/2026
+
+Escopo: tema e tipografia consolidados, sem reconstruir os fluxos; fonte e logo próprias locais. Fórmulas de comissão/repasse da Shopee mantidas, com regressão dos dois comprovantes existentes. O usuário relatou que as vendas estão conciliando; os testes locais verificam apenas as referências disponíveis no repositório.
+
+Falha reproduzida e corrigida: a origem Amazon `norte` (Centro-Oeste, Norte e Nordeste) caía no mesmo vetor DBA do interior Sul/Sudeste sem possuir tabela própria. Passou a exigir tarifa manual e faixa de preço para cálculo automático. Interface, campos obrigatórios, estimativa e busca de preço usam a mesma condição. O teste antigo que aceitava essa equivalência indevida foi corrigido; as outras regiões mantêm os resultados anteriores.
+
+Validação adicional: moeda com frações inferiores ao centavo era aceita no cálculo, pois a tela não usa submissão de formulário. Entradas monetárias agora exigem centavos, com tolerância apenas para representação binária como 0,1 + 0,2, e teto de R$ 1 bilhão por entrada. Quantidade por anúncio limitada a 10.000 para manter totais dentro de limites numéricos seguros. Percentuais, peso e rateios internos permanecem fracionários. Canais e modos de meta desconhecidos são recusados.
+
+Fontes oficiais consultadas: https://venda.amazon.com.br/precos e https://venda.amazon.com.br/cresca/dba. Comissões e tarifas públicas para DBA abaixo de R$ 79 reconferidas; matriz regional acima desse preço não integralmente revalidada. Link de detalhe do Seller Central retornou aplicação dependente de JavaScript, sem tabela verificável. Mercado Livre: documentação pública de custos indica dependência de categoria, logística e tipo de anúncio; acesso integral ficou indisponível (403). Foram mantidas cotações específicas, sem inventar tarifa vigente. Não se alteraram tarifas Shopee já conciliadas.
+
+Oito novos grupos cobrem referências Shopee, origem DBA sem tabela, precisão monetária, rateios fracionários, entrega própria e mensalidade sem duplicação, entradas inválidas, mínimo por varredura de centavos e integridade dos ativos. Permanecem os 33 grupos matemáticos/estruturais, 8 de auditoria independente, 11 de decisões e o teste integrado de interface/exportações.

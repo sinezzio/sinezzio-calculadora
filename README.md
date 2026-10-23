@@ -2,7 +2,7 @@
 
 https://sinezzio.github.io/sinezzio-calculadora/
 
-HTML/JavaScript estático, sem dependências externas. Dados no navegador, sem sincronização. Nenhum custo é consultado automaticamente na conta dos marketplaces.
+HTML/JavaScript estático, com fonte Ubuntu e logo servidas no próprio projeto, sem dependências externas em tempo de execução. Dados no navegador, sem sincronização. Nenhum custo é consultado automaticamente na conta dos marketplaces.
 
 ## Uso
 
@@ -61,3 +61,16 @@ Abra **Analisar riscos e comparar simulações**, abaixo dos resultados:
 - Leitura de dados locais limitada aos campos conhecidos e tipos primitivos. Registros de simulações ilegíveis não são sobrescritos; a exportação preserva o conteúdo bruto para recuperação.
 
 Os testes adicionais usam `node tests/decisions.test.cjs`. As ferramentas não estimam demanda, não alteram anúncios e não consultam contas. As tarifas comerciais anteriores continuam como referência e devem ser conferidas pelo usuário.
+
+
+## Revisão visual e financeira — 23/10/2026
+
+Visual consolidado em um único tema claro, alinhado ao ERP: Ubuntu local (400/500/700), logo original proporcional, campos principais destacados, resultados positivos verdes e alertas distintos. O fluxo compacto da Shopee foi mantido.
+
+A fórmula e a tabela de referência da Shopee não foram alteradas: os dois pedidos reais de R$ 99,90 continuam retornando R$ 69,91 de repasse e R$ 9,91 após custo de R$ 60, antes de despesas adicionais.
+
+Correções: Centro-Oeste/Norte/Nordeste agora exigem cotação manual da logística Amazon; antes usavam indevidamente a matriz do interior Sul/Sudeste. Moedas informadas com mais de duas casas, fora dos limites numéricos, canal inválido e meta desconhecida não produzem resultado válido. Percentuais e rateios mantêm precisão interna; apenas a apresentação é arredondada.
+
+Conferência comercial: https://venda.amazon.com.br/precos e https://venda.amazon.com.br/cresca/dba consultadas em 23/10/2026. Comissões exibidas e tarifas DBA abaixo de R$ 79 conferem com a referência. A matriz DBA acima de R$ 79 não foi integralmente revalidada: a página de detalhes direcionou a uma aplicação dinâmica. Continua identificada como estimativa de referência e exige conferência na conta. Mercado Livre permanece com cotação por anúncio; não foi introduzida uma taxa genérica.
+
+Validação adicional: `node tests/revision-20261023.test.cjs`. Todos os arquivos: `node --test tests/*.test.cjs`. A fonte Ubuntu é distribuída com a licença em assets/ubuntu-LICENSE.txt. Nenhuma conta de marketplace é acessada.
