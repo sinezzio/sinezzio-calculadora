@@ -31,6 +31,6 @@ test('O preço mínimo com cotação da nova região coincide com busca independ
 });
 test('Marca e fonte usam arquivos locais; CSS tem tema único e logo proporcional',()=>{
  for(const file of ['sinezzio-logo.png','ubuntu-400.woff2','ubuntu-500.woff2','ubuntu-700.woff2','ubuntu-LICENSE.txt'])assert.ok(fs.statSync(__dirname+'/../assets/'+file).size>1000);
- assert.equal((html.match(/<style>/g)||[]).length,1);assert.equal(html.includes('color-scheme:dark'),false);assert.ok(html.includes('class="brand-logo"'));assert.ok(html.includes('width:108px'));assert.ok(html.includes('height:auto;object-fit:contain'));
+ assert.equal((html.match(/<style>/g)||[]).length,1);assert.equal(html.includes('color-scheme:dark'),false);assert.ok(html.includes('class="brand-logo"'));assert.ok(html.includes('width:80px;height:62px'));assert.ok(html.includes('height:auto;object-fit:contain'));assert.ok(html.includes('Lucro por anúncio (R$)'));assert.equal(html.includes('Lucro por unidade (R$)'),false);
 });
 console.log(n+' grupos da revisão visual/financeira passaram.');

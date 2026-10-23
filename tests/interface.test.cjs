@@ -28,7 +28,7 @@ function edit(id,v){els[id].value=String(v);els[id].fire('input');els[id].fire('
 
  // Required inputs are visible and individually identified after changing channels.
  els.newProduct.click();edit('cost',60);edit('price',99.9);els.amzBtn.click();
- assert.equal(els.requiredInputs.attrs['class:hide'],false);
+ assert.equal(els.autoCommission.textContent,'—');assert.ok(els.autoCommissionNote.textContent.includes('Selecione a categoria'));assert.equal(els.requiredInputs.attrs['class:hide'],false);
  for(const id of ['category','wt','len','wid','hei']){assert.ok(context.requiredPending.includes(id),id);assert.equal(els[id].attrs['aria-required'],'true');assert.equal(els[id].attrs['aria-invalid'],'true');}
  edit('category','cozinha');edit('wt',1);edit('len',20);edit('wid',15);edit('hei',10);
  assert.equal(context.lastResult.complete,true);assert.equal(els.missingInputs.attrs['class:hide'],true);assert.notEqual(els.profit.textContent,'—');
